@@ -52,8 +52,8 @@
 
 		var globalID = 0, dialogsCount = 0, closeByDocumentHandler, defers = {};
 
-		this.$get = ['$document', '$templateCache', '$compile', '$q', '$http', '$rootScope', '$timeout', '$window', '$controller',
-			function ($document, $templateCache, $compile, $q, $http, $rootScope, $timeout, $window, $controller) {
+		this.$get = ['$document', '$templateRequest', '$compile', '$q', '$http', '$rootScope', '$timeout', '$window', '$controller',
+			function ($document, $templateRequest, $compile, $q, $http, $rootScope, $timeout, $window, $controller) {
 				var $body = $document.find('body');
 				if (forceBodyReload) {
 					$rootScope.$on('$locationChangeSuccess', function () {
@@ -198,8 +198,6 @@
 
 						$q.when(loadTemplate(options.template || options.templateUrl)).then(function (template) {
 
-							$templateCache.put(options.template || options.templateUrl, template);
-
 							if (options.showClose) {
 								template += '<div class="ngdialog-close"></div>';
 							}
@@ -335,7 +333,7 @@
 								return loadTemplateUrl(tmpl, {cache: false});
 							}
 
-							return $templateCache.get(tmpl) || loadTemplateUrl(tmpl, {cache: true});
+							return $templateRequest(tmpl) || loadTemplateUrl(tmpl, {cache: true});
 						}
 					},
 
